@@ -1,26 +1,58 @@
 @extends('layouts.app')
 @section('content')
-    
  <!-- Header-->
  <header class="bg-dark py-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">View finders</h1>
-            <p class="lead fw-normal text-white-50 mb-0">ロゴ</p>
+            <h1 class="display-4 fw-bolder">投稿検索画面</h1>
+            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
         </div>
     </div>
 </header>
  <!-- Section-->
- <div class="text-center"><a class="btn btn-outline-dark mt-1" href="{{ url('search') }}">投稿検索</a></div>
- <div class="text-center"><a class="btn btn-outline-dark mt-1" href="{{ url('camera_add') }}">カメラ登録</a></div>
- <div class="text-center"><a class="btn btn-outline-dark mt-1" href="{{ url('lens_add') }}">レンズ登録</a></div>
+ <div class="card py-4 px-4">
+        <h5 class="card-header">カメラ</h5>
+        <select class="form-select" aria-label="Default select">
+            <option selected="">メーカー名</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+        <select class="form-select" aria-label="Default select">
+            <option selected="">本体名</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+</div>
 
+<div class="card py-4 px-4">
+    <h5 class="card-header">レンズ</h5>
+    <select class="form-select" aria-label="Default select">
+        <option selected="">メーカー名</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+    <select class="form-select" aria-label="Default select">
+        <option selected="">本体名</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+    </select>
+</div>
+  
+ 
+
+ <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url('detail') }}">投稿詳細</a></div>
+ <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url('account') }}">マイページ</a></div>
+ <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url('add_post') }}">新規投稿</a></div>
  <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             
-        {{-- 投稿表示１枚目 --}}
             <div class="col mb-5">
+                
                 <div class="card h-100">
                     <!-- Product image-->
                     <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
@@ -39,13 +71,14 @@
                     <!-- Product actions-->
                     
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url('detail') }}">投稿詳細</a></div>
+                        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ url('search') }}">投稿検索</a></div>
                     </div>
                 </div>
             </div>
-        {{-- 投稿１枚目　ここまで --}}
             <div class="col mb-5">
                 <div class="card h-100">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                     <!-- Product image-->
                     <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
                     <!-- Product details-->
@@ -68,6 +101,8 @@
             </div>
             <div class="col mb-5">
                 <div class="card h-100">
+                    <!-- Sale badge-->
+                    <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
                     <!-- Product image-->
                     <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
                     <!-- Product details-->

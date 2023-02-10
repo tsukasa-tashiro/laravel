@@ -21,12 +21,15 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    protected $namespace ='APP\Http\Controllers';
+
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    // protected $redirectTo = RouteServiceProvider::HOME;
+    public const HOME = '/';
 
     /**
      * Create a new controller instance.
