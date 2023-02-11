@@ -34,23 +34,9 @@
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('account') }}">マイページ</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">All Products</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Popular Items</a></li>
-                        <li><a class="dropdown-item" href="#!">New Arrivals</a></li>
-                    </ul>
-                </li>
+                
             </ul>
-            <form class="d-flex">
-                <button class="btn btn-outline-dark" type="submit">
-                    <i class="bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-dark text-white ms-1 rounded-pill">0</span>
-                </button>
-            </form>
+            
         </div>
     </div>
 </nav>
@@ -60,7 +46,7 @@
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">camera登録</h1>
-            <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+            <p class="lead fw-normal text-white-50 mb-0">ロゴ</p>
         </div>
     </div>
 </header>
@@ -74,6 +60,13 @@
     <label for="formControlInput" class="form-label mt-2">本体名</label>
     <input type="email" class="form-control" id="formControlInput" placeholder="タグを入力">
     <button type="button" class="btn btn-outline-primary mt-3">Primary</button>
+</div>
+<div>
+    @foreach($cameras as $camera)
+    <tr>
+        <th scope='col'>{{ $camera['maker']}}</th>
+    </tr>
+    @endforeach
 </div>
  
 

@@ -13,3 +13,6 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
    .sass('resources/sass/app.scss', 'public/css');
+
+   // https://cruw.co.jp/blog/safari-popper-404/　を見本にコピペ　下1行
+ mix.sourceMaps().js('node_modules/popper.js/dist/popper.js', 'public/js').sourceMaps();

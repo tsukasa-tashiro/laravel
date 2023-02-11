@@ -31,6 +31,7 @@ Route::get('lens_add','DisplayController@lens_add');
 // Route::get('/create', [DisplayController::class, 'create'])->name('post.create');
 // Route::post('/store', [DisplayController::class, 'store'])->name('post.store');
 
+Route::post('/post/confirm', 'PostController@confirm')->name('post.confirm');
 Route::resource('post', PostController::class);
 
 });
