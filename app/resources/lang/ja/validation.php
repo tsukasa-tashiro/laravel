@@ -155,7 +155,9 @@ return [
         'lens_id' => 'レンズ',
         'spot_name' => '名称',
         'spot_address' => '住所',
+        'maker' => 'メーカー',
         
+
     ],
 
 ];

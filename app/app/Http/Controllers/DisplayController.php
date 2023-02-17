@@ -40,7 +40,7 @@ class DisplayController extends Controller
 
     public function camera_add(){
         
-        return view('camera_add');
+        return view('camera.add');
     }
 
     public function lens_add(){

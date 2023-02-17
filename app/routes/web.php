@@ -16,24 +16,23 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::group(['middleware' => 'auth'],function(){
 
-Route::get('/', function () {
-    return view('home');
-});
-Route::get('/home', 'HomeController@index')->name('home');
-Route::get('search','DisplayController@search');
-Route::get('detail','DisplayController@detail');
-Route::get('account','DisplayController@account');
-// Route::get('add_post','DisplayController@add_post');
-Route::get('camera_add','DisplayController@camera_add');
-Route::get('lens_add','DisplayController@lens_add');
 
-// 画像投稿
-// Route::get('/create', [DisplayController::class, 'create'])->name('post.create');
-// Route::post('/store', [DisplayController::class, 'store'])->name('post.store');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/post/search','PostController@search')->name('post.search');
+Route::get('/account','DisplayController@account');
 
 Route::post('/post/confirm', 'PostController@confirm')->name('post.confirm');
+Route::post('/camera/confirm', 'CameraController@confirm')->name('camera.confirm');
+Route::post('/lens/confirm', 'LensController@confirm')->name('lens.confirm');
+Route::post('/like', 'PostController@like')->name('post.like');
+
 Route::resource('post', PostController::class);
+Route::resource('camera', CameraController::class);
+Route::resource('lens', LensController::class);
 
 });
 
-// Route::get('/',[DisplayController::class,'index']);
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');

@@ -8,8 +8,8 @@
       <input type="hidden" name="title" value="{{ $post['title'] }}">
     </div>
     <div class="form-group">
-      <input type="text" name="tag" class="form-control" value="{{ $post['tag'] }}" disabled >
-      <input type="hidden" name="tag" value="{{ $post['tag'] }}">
+      <input type="text" name="tag" class="form-control" value="{{ $tag }}" disabled >
+      <input type="hidden" name="tag" value="{{ $tag }}">
     </div>
     <div class="form-group">
       <input type="text"  class="form-control" value="{{ $camera->maker }}-{{ $camera->name }}" disabled >
@@ -28,23 +28,23 @@
       <input type="hidden" name="spot_address" value="{{ $post['spot_address'] }}">
     </div>
     <div class="form-group">
-        <img src="{{ asset('storage/images/'.$image_name1) }}">
+        <img src="{{ asset('storage/images/'.$image_name1) }}" width="30%">
         <input type="hidden" name="image1" value="{{ $image_name1 }}">
     </div>
     @if($image_name2)
     <div class="form-group">
-        <img src="{{ asset('storage/images/'.$image_name2) }}">
+        <img src="{{ asset('storage/images/'.$image_name2) }}" width="30%">
         <input type="hidden" name="image2" value="{{ $image_name2 }}">
     </div>
     @endif
     @if($image_name3)
     <div class="form-group">
-        <img src="{{ asset('storage/images/'.$image_name3) }}">
+        <img src="{{ asset('storage/images/'.$image_name3) }}" width="30%">
         <input type="hidden" name="image3" value="{{ $image_name3 }}">
     </div>
     @endif
    
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">投稿</button>
   </form>
 
 @endsection

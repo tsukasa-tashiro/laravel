@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Camera;
+use App\Lens;
 
-class CameraController extends Controller
+class LensController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class CameraController extends Controller
      */
     public function index()
     {
-       
+        //
     }
 
     /**
@@ -24,7 +24,7 @@ class CameraController extends Controller
      */
     public function create()
     {
-        return view('camera.create');
+        return view('lens.create');  
     }
 
     public function confirm(Request $request){
@@ -35,7 +35,7 @@ class CameraController extends Controller
             'name' => 'required|max:50',
         ]);
         // dd($validatedDate);
-        return view('camera.confirm',[
+        return view('lens.confirm',[
             
             'post'=>$request->all(),
         ]);
@@ -49,12 +49,11 @@ class CameraController extends Controller
      */
     public function store(Request $request)
     {
-        $camera = new Camera;
-        $camera->maker = $request->maker;
-        $camera->name = $request->name;
-        $camera->save();
+        $lens = new Lens;
+        $lens->maker = $request->maker;
+        $lens->name = $request->name;
+        $lens->save();
         return redirect()->route('home');
-
     }
 
     /**

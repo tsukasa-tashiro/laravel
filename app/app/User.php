@@ -5,13 +5,14 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPassword;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
     public function post(){
-        return $this->hasMany('App\Post');
+        return $this->belongsToMany('App\Post','likes','user_id','post_id');
     }
 
     public function like(){
@@ -44,4 +45,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+     /**
+    * パスワードリセット通知の送信
+    *
+    * @param  string  $token
+    * @return void
+    */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token)); 
+    }
 }

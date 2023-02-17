@@ -66,21 +66,21 @@
         <h5 class="card-header">カメラ</h5>
         <select name="camera_id" class="form-select" aria-label="Default select">
            
-            <option selected="">メーカー名</option>
+            <option selected="">メーカー名 - 本体名</option>
             @foreach($cameras as $camera)
             <option value="{{$camera['id']}}">{{$camera['maker']}}-{{$camera['name']}}</option>
             @endforeach
 
         </select>
        
-    </div>
+    </div>  
 
     {{-- レンズ選択 --}}
     <div class="card py-4 px-4">
         <h5 class="card-header">レンズ</h5>
         <select name="lens_id" class="form-select" aria-label="Default select">
            
-            <option selected="">メーカー名</option>
+            <option selected="">メーカー名 - レンズ名</option>
             @foreach($lenses as $lens)
             <option value="{{$lens['id']}}">{{$lens['maker']}}-{{$lens['name']}}</option>
             @endforeach
