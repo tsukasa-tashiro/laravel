@@ -26,6 +26,10 @@ Route::post('/camera/confirm', 'CameraController@confirm')->name('camera.confirm
 Route::post('/lens/confirm', 'LensController@confirm')->name('lens.confirm');
 Route::post('/like', 'PostController@like')->name('post.like');
 
+Route::post('/post/editConfirm', 'PostController@editConfirm')->name('post.editConfirm');
+Route::post('/camera/editConfirm', 'CameraController@editConfirm')->name('camera.editConfirm');
+Route::post('/lens/editConfirm', 'LensController@editConfirm')->name('lens.editConfirm');
+
 Route::resource('post', PostController::class);
 Route::resource('camera', CameraController::class);
 Route::resource('lens', LensController::class);

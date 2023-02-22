@@ -7,7 +7,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>
+        {{-- {{ config('app.name', 'Laravel') }} --}}
+        Viewfinders
+    </title>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -44,7 +47,8 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{-- {{ config('app.name', 'Laravel') }} --}}
+                    Viewfinders
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -71,6 +75,7 @@
                         @else
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url('/')}}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('post.create') }}">新規投稿</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('post.search') }}">投稿検索</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ url('account') }}">マイページ</a></li>
                        
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="">

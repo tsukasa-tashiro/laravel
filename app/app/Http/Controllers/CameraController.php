@@ -24,20 +24,27 @@ class CameraController extends Controller
      */
     public function create()
     {
-        return view('camera.create');
+        $camera = new Camera;
+        $all_camera = $camera->all()->toArray();
+
+        return view('camera.create',[
+
+            'cameras' => $all_camera,
+
+        ]);
     }
 
     public function confirm(Request $request){
-        
+              
         $validatedDate = $request->validate([
 
             'maker' => 'required|max:20',
             'name' => 'required|max:50',
         ]);
-        // dd($validatedDate);
-        return view('camera.confirm',[
-            
-            'post'=>$request->all(),
+
+        return view('camera.confirm',[    
+
+            'camera'=>$request->all(),
         ]);
     }
 
@@ -76,7 +83,23 @@ class CameraController extends Controller
      */
     public function edit($id)
     {
-        //
+        $camera = Camera::find($id);
+        
+        return view('camera.edit',[
+            'camera' => $camera,
+        ]);
+    }
+
+    public function editConfirm(Request $request){
+              
+        $validatedDate = $request->validate([
+            'id' => 'required',
+            'maker' => 'required|max:20',
+            'name' => 'required|max:50',
+        ]);
+        return view('camera.editConfirm',[    
+            'camera'=>$request->all(),
+        ]);
     }
 
     /**
@@ -88,7 +111,12 @@ class CameraController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $camera = Camera::findOrFail($id);
+
+        $camera->maker = $request->maker;
+        $camera->name = $request->name;
+        $camera->save();
+        return redirect()->route('home');
     }
 
     /**
@@ -99,6 +127,9 @@ class CameraController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $camera = Camera::find($id);
+        $camera->delete();
+        
+        return redirect(route('camera.create'))->with('success', 'カメラを削除しました');
     }
 }

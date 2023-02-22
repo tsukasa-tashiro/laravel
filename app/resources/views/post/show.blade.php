@@ -45,6 +45,12 @@
                             <span class=" text-decoration-line-through">{{ $tag->name }}</span>
                             @endforeach
                             @endif
+                            <br>
+                            <span class=" text-decoration-line-through ">カメラメーカー：{{ $camera->maker }}</span><br>
+                            <span class=" text-decoration-line-through ">カメラ名：{{ $camera->name }}</span><br>
+
+                            <span class=" text-decoration-line-through">レンズメーカー：{{ $lens->maker }}</span><br>
+                            <span class=" text-decoration-line-through">レンズ名：{{ $lens->name }}</span><br>
                         </div>
                     </div>
 
@@ -74,11 +80,15 @@
                     @if(Auth::id()==$post->user_id)
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent ">
                         <div class="text-center mt-2">
-                            <a class="btn btn-outline-dark mt-auto" href="{{ route('post.edit',['post'=>$post->id]) }}">編集</a>
+                            <a class="btn btn-secondary mt-auto" href="{{ route('post.edit',['post'=>$post->id]) }}">編集</a>
                         </div>
-                        <div class="text-center mt-2">
-                            <a class="btn btn-outline-dark mt-auto" href="{{ route('post.destroy',['post'=>$post->id]) }}">削除</a>
-                        </div>
+                        
+                        <form action="{{route('post.destroy', $post->id)}}" method="post" class="text-center mt-2">
+                            @csrf
+                            @method('delete')
+                            <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'>
+                        </form>
+
                     </div>
                     @endif
                 </div>

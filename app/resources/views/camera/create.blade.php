@@ -1,45 +1,6 @@
-<!DOCTYPE html>
-<html lang="ja">
-    @extends('layouts.app')
-
+@extends('layouts.app')
 @section('content')
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
 
-        @isset($title)
-        <title>{{ $title }} Shop Homepage - Start Bootstrap Template</title>
-            
-        @else
-        <title>Viewfinders</title>
-        @endisset
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/favicon.ico') }}" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{{ asset('css/styles.css') }}" rel="stylesheet" />
-        
-    </head>
-<body>
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="#!">Start Bootstrap</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item"><a class="nav-link active" aria-current="page" href="#!">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="#!">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{{ url('account') }}">マイページ</a></li>
-                
-            </ul>
-            
-        </div>
-    </div>
-</nav>
 
  <!-- Header-->
  <header class="bg-dark py-5">
@@ -51,19 +12,53 @@
     </div>
 </header>
  <!-- Section-->
+ <div class="container px-4 px-lg-5 mt-3">
 
- <form action="{{ route('camera.confirm') }}" method="post">
-    @csrf
-    <div class="card py-4 px-4 mt-4">
-        <h5 class="fw-bolder">レンズ</h5>
-        <label for="maker" class="form-label mt-2">メーカー</label>
-        <input type="text" name="maker" class="form-control" placeholder="メーカー名を入力" value="{{ old('maker') }}">
-        <label for="name" class="form-label mt-2">本体名</label>
-        <input type="text" name="name" class="form-control" placeholder="本体名を入力" value="{{ old('name')}}">
-        <button type="submit" class="btn btn-outline-primary mt-3">登録確認</button>
-</div>
-</form>
+            <form action="{{ route('camera.confirm') }}" method="post">
+                @csrf
+                <div class="card py-4 px-4 mt-4">
+                    <h5 class="card-title">カメラ</h5>
+                    <label for="maker" class="form-label mt-2">メーカー</label>
+                    <input type="text" name="maker" class="form-control" placeholder="メーカー名を入力" value="{{ old('maker') }}">
+                    <label for="name" class="form-label mt-2">本体名</label>
+                    <input type="text" name="name" class="form-control" placeholder="本体名を入力" value="{{ old('name')}}">
+                    <button type="submit" class="btn btn-outline-primary mt-3">登録確認</button>
+                </div>
+            </form>
 
+            <table class="table mt-4">
+                <thead class="thead-light">
+                    <tr>
+                        <th>メーカー</th>
+                        <th>本体名</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($cameras as $camera)
+                    <tr>
+                        <td>{{$camera['maker']}}</td>
+                        <td>{{$camera['name']}}</td>
+                        <td>
+                            <form action="{{ route('camera.edit',['camera'=>$camera['id']]) }}">
+                                @csrf
+                                <input type="submit" value="編集" class="btn btn-secondary">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{{ route('camera.destroy',['camera'=>$camera['id']]) }}" method="post">
+                                @csrf
+                                @method('delete')
+                                <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？")';>
+                            </form>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+          
+ </div>
 <!-- Footer-->
 <footer class="py-5 bg-dark">
     <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>

@@ -52,12 +52,12 @@
             </div>
         @endforeach
 
-           
-
         {{-- 投稿ここまで --}}
-
-                 
+        
+        </div>
+        <div class="d-flex justify-content-center">{{ $posts->links() }}
     </div>
+    
 </section>
 <!-- Footer-->
 <footer class="py-5 bg-dark">

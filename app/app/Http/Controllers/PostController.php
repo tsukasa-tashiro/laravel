@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Camera;
 use App\Lens;
 use App\Post;
@@ -19,7 +20,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        // $posts = Post::all();
+        $posts = Post::paginate(2);
 
         return view('home',[
             'posts' => $posts,
@@ -159,9 +161,15 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post_likes_count = $post->likes()->count();
+
+        $camera = Camera::find($post->camera_id);
+        $lens = Lens::find($post->lens_id);
+
         return view('post.show',[
             'post' => $post,
             'post_likes_count' => $post_likes_count,
+            'camera' => $camera,
+            'lens' => $lens,
         ]);
     }
 
@@ -173,7 +181,72 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::find($id);
+        $camera = new camera;
+        $all_camera = $camera->all()->toArray();
+        
+        
+        $lens = new lens;
+        $all_lens = $lens->all()->toArray();
+        
+        $tags = $post->tags()->pluck('name');
+        $arr = [];
+        foreach($tags as $tag){
+            $arr[] = $tag;
+        }
+        $tags = implode(' ', $arr);
+
+        return view('post.edit',[
+            'cameras' => $all_camera,
+            'lenses' => $all_lens,
+            'post' => $post,
+            'tag'=>$tags,
+        ]);
+    }
+
+    public function editConfirm(Request $request)
+    {
+    
+        $validatedData = $request->validate([
+            'title' => 'required|max:30',
+            'tag' => 'required',
+            'image1' => 'required|mimes:jpg,jpeg,png,gif',
+            'image2' => 'mimes:jpg,jpeg,png,gif',
+            'image3' => 'mimes:jpg,jpeg,png,gif',
+            'camera_id' => 'required',
+            'lens_id' => 'required',
+            'spot_name' => 'required',
+            'spot_address' => 'required',
+        ]);
+        
+        if($request->hasFile('image1')){
+            $image_name1 = $this->confirmImage($request->image1);
+        }
+        if($request->hasFile('image2')){
+            $image_name2 = $this->confirmImage($request->image2);
+        }
+        if($request->hasFile('image3')){
+            $image_name3 = $this->confirmImage($request->image3);
+        }
+        
+        // 全角スペースを半角に変換
+        $spaceConversion = mb_convert_kana($request->tag, 's');
+        
+        // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+        $array = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+        $camera = Camera::find($request->camera_id);
+        $lens= Lens::find($request->lens_id);
+
+        return view('post.editC',[
+            'post'=>$request->all(),
+            'tag'=>implode(',',$array),
+            'image_name1'=>$image_name1 ,
+            'image_name2'=>$image_name2 ?? null,
+            'image_name3'=>$image_name3 ?? null,
+            'camera'=>$camera,
+            'lens'=>$lens,
+        ]);
+    
     }
 
     /**
@@ -185,7 +258,44 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        try{
+
+       
+            $post = Post::findOrFail($id);
+
+            $post->title = $request->title;
+            $post->camera_id = $request->camera_id;
+            $post->lens_id = $request->lens_id;
+            $post->spot_name = $request->spot_name;
+            $post->spot_address = $request->spot_address;
+            $post->image1 = $request->image1;
+            $post->image2 = $request->image2 ?? null;
+            $post->image3 = $request->image3 ?? null;
+            $post->save();
+
+            // タグの保存
+            foreach($post->tags as $tag){
+                Tag::where('id',$tag->id)->delete();
+            }
+            
+            $tags = explode(',',$request->tag);
+            $tags_id = [];
+            foreach ($tags as $tag) {
+                $record = Tag::create(
+                    ['name' => $tag]
+                ); 
+                // array_push($tags_id, $post['id']);
+                DB::table('post_tag')->insert([
+                    'tag_id'=>$record->id,
+                    'post_id'=>$post['id']
+                ]);
+            };
+            
+        }catch(\Exception $e){
+            report($e);
+        }
+        return redirect()->route('home');
+        
     }
 
     /**
@@ -196,7 +306,11 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        
+        return redirect(route('post.index'))->with('success', '投稿を削除しました');
+        
     }
 
     public function like(Request $request)

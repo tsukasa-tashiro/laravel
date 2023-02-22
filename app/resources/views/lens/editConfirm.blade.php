@@ -1,8 +1,9 @@
 @extends('layouts.app')
 @section('content')
 
-<form action="{{route('lens.store')}}" method="post">
+<form action="{{route('lens.update',$lens['id'])}}" method="post">
     @csrf
+    @method('PUT')
     <div class="form-group">
       <input type="text" name="maker" class="form-control" value="{{ $lens['maker'] }}" disabled >
       <input type="hidden" name="maker" value="{{ $lens['maker'] }}">
@@ -14,7 +15,7 @@
     
     
    
-    <button type="submit" class="btn btn-primary">登録</button>
+    <button type="submit" class="btn btn-primary">更新</button>
   </form>
 
 @endsection

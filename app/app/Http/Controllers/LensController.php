@@ -14,7 +14,7 @@ class LensController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -24,7 +24,12 @@ class LensController extends Controller
      */
     public function create()
     {
-        return view('lens.create');  
+        $lens = new Lens;
+        $all_lens = $lens->all()->toArray();
+
+        return view('lens.create',[
+            'lenses' => $all_lens,
+        ]);  
     }
 
     public function confirm(Request $request){
@@ -34,10 +39,10 @@ class LensController extends Controller
             'maker' => 'required|max:20',
             'name' => 'required|max:50',
         ]);
-        // dd($validatedDate);
+
         return view('lens.confirm',[
             
-            'post'=>$request->all(),
+            'lens'=>$request->all(),
         ]);
     }
 
@@ -75,7 +80,24 @@ class LensController extends Controller
      */
     public function edit($id)
     {
-        //
+        $lens = Lens::find($id);
+        
+        return view('lens.edit',[
+            'lens' => $lens,
+        ]);
+    }
+
+    public function editConfirm(Request $request){
+              
+        $validatedDate = $request->validate([
+            'id' => 'required',
+            'maker' => 'required|max:20',
+            'name' => 'required|max:50',
+        ]);
+
+        return view('lens.editConfirm',[    
+            'lens'=>$request->all(),
+        ]);
     }
 
     /**
@@ -87,7 +109,12 @@ class LensController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $lens = Lens::findOrFail($id);
+
+        $lens->maker = $request->maker;
+        $lens->name = $request->name;
+        $lens->save();
+        return redirect()->route('home');
     }
 
     /**
@@ -98,6 +125,9 @@ class LensController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $lens = Lens::find($id);
+        $lens->delete();
+        
+        return redirect(route('lens.create'))->with('success', 'カメラを削除しました');    
     }
 }
