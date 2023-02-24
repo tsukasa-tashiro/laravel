@@ -11,6 +11,7 @@ use App\Post;
 use App\Tag;
 use App\Like;
 
+
 class PostController extends Controller
 {
     /**
@@ -21,7 +22,7 @@ class PostController extends Controller
     public function index()
     {
         // $posts = Post::all();
-        $posts = Post::paginate(2);
+        $posts = Post::paginate(8);
 
         return view('home',[
             'posts' => $posts,
@@ -49,8 +50,54 @@ class PostController extends Controller
         ]);
     }
 
-    public function search()
+    public function search(Request $request)
     {
+        if($request->hasAny(['camera','lens','tags'])){
+
+            $cameraId = $request->input('camera') ?? null;
+            $lensId = $request->input('lens') ?? null;
+            $tags = $request->input('tags') ?? null;
+            $query = Post::query();
+    
+            // テーブル結合
+            $query->join('post_tag', 'posts.id', '=', 'post_tag.post_id')
+            ->join('tags', 'post_tag.tag_id', '=', 'tags.id');
+    
+            if(!empty($cameraId)){
+                $query->where('posts.camera_id', $cameraId);
+            }
+           
+            if(!empty($lensId)){
+                $query->where('posts.lens_id', $lensId);
+            }
+
+            if (!empty($tags)) {
+    
+                // カンマが入力された場合
+                $tags = str_replace(',', '', $tags);
+                // 全角スペースを半角に変換
+                $spaceConversion = mb_convert_kana($tags, 's');
+    
+                // 単語を半角スペースで区切り、配列にする（例："山田 翔" → ["山田", "翔"]）
+                $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+                
+                // 単語をループで回し、タグと部分一致するものがあれば、$queryとして保持される
+                foreach($wordArraySearched as $value) {
+                    $query->orWhere('tags.name', 'like', '%'.$value.'%');
+                }  
+            }
+             // 上記で取得した$queryをページネートにし、変数$usersに代入
+             $posts = $query->distinct()->select(
+                 'posts.id as id',
+                 'posts.title',
+                 'posts.image1', 
+             )->paginate(12);
+        }else{
+            $posts = Post::paginate(12);
+        }
+
+     
+
         $camera = new camera;
         $all_camera = $camera->all()->toArray();
 
@@ -58,10 +105,10 @@ class PostController extends Controller
         $all_lens = $lens->all()->toArray();
 
 
-
         return view('post.search',[
             'cameras' => $all_camera,
             'lenses' => $all_lens,
+            'posts' => $posts,
         ]);
     }
 
@@ -161,6 +208,7 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($id);
         $post_likes_count = $post->likes()->count();
+        $address = $post->spot_address;
 
         $camera = Camera::find($post->camera_id);
         $lens = Lens::find($post->lens_id);
@@ -170,6 +218,7 @@ class PostController extends Controller
             'post_likes_count' => $post_likes_count,
             'camera' => $camera,
             'lens' => $lens,
+            'address' => $address,
         ]);
     }
 
@@ -297,6 +346,45 @@ class PostController extends Controller
         return redirect()->route('home');
         
     }
+
+    public function report()
+    {
+
+        $posts = Post::where('report', '!=', '0')->get();
+        return view('post.report',[
+            'posts' => $posts,
+        ]);
+    }
+
+
+      /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reportUpdate(Request $request, $id)
+    {
+        try{
+
+       
+            $post = Post::findOrFail($id);
+            $post->report = $request->report;
+            $post->report = $post->report + 1;
+          
+            $post->save();
+
+            
+        }catch(\Exception $e){
+            report($e);
+        }
+        return redirect()->route('post.index');
+        
+    }
+
+   
+    
 
     /**
      * Remove the specified resource from storage.

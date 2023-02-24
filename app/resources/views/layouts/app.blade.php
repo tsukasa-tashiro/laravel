@@ -50,6 +50,7 @@
                     {{-- {{ config('app.name', 'Laravel') }} --}}
                     Viewfinders
                 </a>
+                
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -76,11 +77,12 @@
                             <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url('/')}}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('post.create') }}">新規投稿</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('post.search') }}">投稿検索</a></li>
-                            <li class="nav-item"><a class="nav-link" href="{{ url('account') }}">マイページ</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{{ route('user.show',Auth::user()) }}">マイページ</a></li>
+                            <p class="m-2"> <?php $user = Auth::user(); ?> {{ $user->name }} さん</p>
                        
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="">
                                 @csrf
-                                <button>logout</button>
+                                <button class="btn btn-dark">logout</button>
                             </form>
                         @endguest
                     </ul>

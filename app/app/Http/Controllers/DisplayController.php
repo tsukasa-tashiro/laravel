@@ -7,6 +7,7 @@ use App\User;
 use App\Post;
 use App\Camera;
 
+
 class DisplayController extends Controller
 {
     public function index(){

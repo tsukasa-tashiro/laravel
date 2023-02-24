@@ -1,44 +1,15 @@
 @extends('layouts.app')
 @section('content')
+    
  <!-- Header-->
- <header class="bg-dark py-1">
+ <header class="bg-dark py-2">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-5 fw-bolder">投稿検索画面</h1>
+            <h1 class="display-4 fw-bolder">不適切投稿一覧</h1>
         </div>
     </div>
 </header>
  <!-- Section-->
-<div class="row gx-3 gx-lg-5 row-cols-1 row-cols-md-1 row-cols-xl-2 justify-content-center">
-    <form action="{{ route('post.search') }}" method="get"> 
-        <div class="card py-3 px-3 m-4">
-                <h5 class="">カメラ</h5>
-                <select class="form-select" name="camera" aria-label="Default select">
-                    <option disabled selected>メーカー名　ー　本体名</option>
-                    @foreach($cameras as $camera)
-                        <option value="{{$camera['id']}} ">{{$camera['maker']}}-{{$camera['name']}}</option>
-                    @endforeach
-                </select>
-        </div>
-        <div class="card py-3 px-3 m-4">
-            <h5 class="">レンズ</h5>
-            <select class="form-select" name="lens" aria-label="Default select">
-                <option disabled selected>メーカー名　ー　本体名</option>
-                @foreach($lenses as $lens)
-                    <option value="{{$lens['id']}}">{{$lens['maker']}}-{{$lens['name']}}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="card py-3 px-3 m-4">
-            <h5 class="">タグ</h5>
-           <input type="text" name="tags" id="tags" placeholder="山、海、東京" >
-        </div>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">検索</button>
-        </div>
-    </form>  
-</div>
- 
  <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -64,20 +35,34 @@
                             <span class=" text-decoration-line-through">{{ $tag->name }}</span>
                             @endforeach
                             @endif
+                            <div class="bg-dark">
+                                <h5 class="text-white m-3">報告件数：{{ $post->report }}件</h5>
+                            </div>
+
                         </div>
                     </div>
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center">
+                        
+                        <form action="{{route('post.destroy', $post->id)}}" method="post" class="text-center mt-2">
+                            @csrf
+                            @method('delete')
+                            <input type="submit" value="削除" class="btn btn-danger" onclick='return confirm("削除しますか？");'>
+                        </form>
+
+                        {{-- <div class="text-center">
                             <a class="btn btn-outline-dark mt-auto" href="{{ route('post.show',['post'=>$post->id]) }}">投稿詳細</a>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>
         @endforeach
+    
+
+        {{-- 投稿ここまで --}}
         
         </div>
-        <div class="d-flex justify-content-center">
-            {{$posts->appends(request()->input())->links()}}
+    </div>
+        </div>
     </div>
 </section>
 <!-- Footer-->

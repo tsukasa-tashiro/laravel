@@ -2,23 +2,22 @@
 @section('content')
     
  <!-- Header-->
- <header class="bg-dark py-5">
+ <header class="bg-dark py-1">
     <div class="container px-4 px-lg-5 my-2">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">View finders</h1>
-            <p class="lead fw-normal text-white-50 mb-0">ロゴ</p>
+            <h1 class="display-4 fw-bolder">投稿詳細</h1>
         </div>
     </div>
 </header>
  <!-- Section-->
 
- <section class="py-5">
+ <section class="py-2">
     <div class="container px-4 px-lg-5 mt-5">
-        <div class="row gx-3 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-3 justify-content-center">
+        <div class="row gx-3 gx-lg-5 row-cols-1 row-cols-md-1 row-cols-xl-2 justify-content-center">
             
         
             <div class="col mb-5">
-                <div class="card h-100">
+                <div class="card">
                     @if($post->image1)
                     <img class="card-img-top" src="{{ asset('storage/images/'.$post->image1) }}" alt="..." />
                     @else
@@ -35,22 +34,24 @@
 
                     <div class="card-body p-4">
                         <div class="text-center">
-                            <h5 class="fw-bolder">{{ $post->title }}</h5>
+                            <h5 class="fw-bolder">タイトル：{{ $post->title }}</h5>
                             @php
                             $tags=$post->tags()->get(); 
                             
                             @endphp
                             @if(!is_null($tags))
                             @foreach($tags as $tag)
-                            <span class=" text-decoration-line-through">{{ $tag->name }}</span>
+                            <p class=" text-center">タグ：{{ $tag->name }}</p>
                             @endforeach
                             @endif
                             <br>
-                            <span class=" text-decoration-line-through ">カメラメーカー：{{ $camera->maker }}</span><br>
-                            <span class=" text-decoration-line-through ">カメラ名：{{ $camera->name }}</span><br>
-
-                            <span class=" text-decoration-line-through">レンズメーカー：{{ $lens->maker }}</span><br>
-                            <span class=" text-decoration-line-through">レンズ名：{{ $lens->name }}</span><br>
+                            <p class=" text-left mt-2">撮影地：{{ $post->spot_name }}</p>
+                            <p class=" text-left mt-2">カメラメーカー：{{ $camera->maker }}</p>
+                            <p class=" text-left ">カメラ名：{{ $camera->name }}</p>
+                            <p class=" text-left">レンズメーカー：{{ $lens->maker }}</p>
+                            <p class=" text-left">レンズ名：{{ $lens->name }}</p>
+                            
+                            
                         </div>
                     </div>
 
@@ -91,15 +92,25 @@
 
                     </div>
                     @endif
+                    @if(Auth::id()!=$post->user_id)
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent ">
+
+                        <form action="{{route('post.reportUpdate', $post->id)}}" method="post" class="text-center mt-2">
+                            @csrf
+                            <input type="hidden" name="id" value="{{$post->id}}">
+                            <input type="hidden" name="report" value="{{$post->report}}">
+                            <input type="submit" value="不適切投稿として報告" class="btn btn-secondary" onclick='return confirm("報告しますか？");'>
+                        </form>
+                        
+                    </div>
+                    @endif
                 </div>
+                
             </div>
-
-           
-
-        {{-- 投稿ここまで --}}
-
-                 
-    </div>
+            <div class="col" id="map" style="width: 600px; height: 500px;"></div>
+            <input type="hidden"  id="spot_address" value="{{$post->spot_address}}">
+        </div>
+    
 </section>
 <!-- Footer-->
 <footer class="py-5 bg-dark">
@@ -112,6 +123,33 @@
   }
 </style>
 <script>
-   
-   
+     
+    // Google Mapを表示する関数
+function initMap() {
+  const address = "{!! $address !!}"; 
+  const geocoder = new google.maps.Geocoder();
+  // ここでaddressのvalueに住所のテキストを指定する
+  geocoder.geocode( { address: address}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      const latlng = {
+        lat: results[0].geometry.location.lat(),
+        lng: results[0].geometry.location.lng()
+      }
+      const opts = {
+        zoom: 15,
+        center: new google.maps.LatLng(latlng)
+      }
+      const map = new google.maps.Map(document.getElementById('map'), opts)
+      new google.maps.Marker({
+        position: latlng,
+        map: map 
+      })
+    } else {
+      console.error('Geocode was not successful for the following reason: ' + status)
+    }
+  })
+}
+     
+      
+    
 </script>

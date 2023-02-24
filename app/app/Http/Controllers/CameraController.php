@@ -60,7 +60,7 @@ class CameraController extends Controller
         $camera->maker = $request->maker;
         $camera->name = $request->name;
         $camera->save();
-        return redirect()->route('home');
+        return redirect()->route('camera.create');
 
     }
 
@@ -116,7 +116,7 @@ class CameraController extends Controller
         $camera->maker = $request->maker;
         $camera->name = $request->name;
         $camera->save();
-        return redirect()->route('home');
+        return redirect()->route('camera.create');
     }
 
     /**

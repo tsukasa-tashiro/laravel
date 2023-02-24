@@ -13,13 +13,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
 Auth::routes();
 Route::group(['middleware' => 'auth'],function(){
 
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/post/search','PostController@search')->name('post.search');
-Route::get('/account','DisplayController@account');
+// Route::get('/account','DisplayController@account');
 
 Route::post('/post/confirm', 'PostController@confirm')->name('post.confirm');
 Route::post('/camera/confirm', 'CameraController@confirm')->name('camera.confirm');
@@ -30,9 +32,17 @@ Route::post('/post/editConfirm', 'PostController@editConfirm')->name('post.editC
 Route::post('/camera/editConfirm', 'CameraController@editConfirm')->name('camera.editConfirm');
 Route::post('/lens/editConfirm', 'LensController@editConfirm')->name('lens.editConfirm');
 
+Route::get('/post/report', 'PostController@report')->name('post.report');
+Route::post('/post/report', 'PostController@report')->name('post.report');
+Route::post('/post/show/{id}', 'PostController@reportUpdate')->name('post.reportUpdate');
+
+Route::get('/user/likesIndex', 'UserPostController@likesIndex')->name('user.likesIndex');
+Route::post('/user/likesIndex', 'UserPostController@likesIndex')->name('user.likesIndex');
+
 Route::resource('post', PostController::class);
 Route::resource('camera', CameraController::class);
 Route::resource('lens', LensController::class);
+Route::resource('user', UserPostController::class);
 
 });
 

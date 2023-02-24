@@ -6,14 +6,20 @@
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">View finders</h1>
-            <p class="lead fw-normal text-white-50 mb-0">ロゴ</p>
         </div>
     </div>
 </header>
  <!-- Section-->
- <div class="text-center"><a class="btn btn-outline-dark mt-1" href="{{ route('post.search') }}">投稿検索</a></div>
- <div class="text-center"><a class="btn btn-outline-dark mt-1" href="{{ route('camera.create') }}">カメラ登録</a></div>
- <div class="text-center"><a class="btn btn-outline-dark mt-1" href="{{ route('lens.create') }}">レンズ登録</a></div>
+ @if(Auth::id()== 2)
+ <div class="container px-4 px-lg-5 mt-5">
+ <div class="card">
+ <h1 class="text-center fw-bolder">管理者権限</h1>
+ <div class="text-center"><a class="btn btn-outline-dark m-1" href="{{ route('camera.create') }}">カメラ登録</a></div>
+ <div class="text-center"><a class="btn btn-outline-dark m-1" href="{{ route('lens.create') }}">レンズ登録</a></div>
+ <div class="text-center"><a class="btn btn-outline-dark m-1" href="{{ route('post.report') }}">不適切報告一覧</a></div>
+</div>
+</div>
+ @endif
 
  <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">

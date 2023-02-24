@@ -58,7 +58,7 @@ class LensController extends Controller
         $lens->maker = $request->maker;
         $lens->name = $request->name;
         $lens->save();
-        return redirect()->route('home');
+        return redirect()->route('lens.create');
     }
 
     /**
@@ -114,7 +114,7 @@ class LensController extends Controller
         $lens->maker = $request->maker;
         $lens->name = $request->name;
         $lens->save();
-        return redirect()->route('home');
+        return redirect()->route('lens.create');
     }
 
     /**
