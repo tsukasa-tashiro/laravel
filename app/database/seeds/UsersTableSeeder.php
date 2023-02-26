@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 
 class UsersTableSeeder extends Seeder
 {
@@ -13,9 +14,10 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'test test',
+            'name' => '管理者2',
             'email' => 'test@test.com',
-            'password' => 'testtest',
+            'password' => Hash::make('testtest'),
+            'role' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
 

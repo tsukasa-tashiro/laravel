@@ -74,7 +74,7 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url('/')}}">Home</a></li>
+                            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ route('home')}}">Home</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('post.create') }}">新規投稿</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('post.search') }}">投稿検索</a></li>
                             <li class="nav-item"><a class="nav-link" href="{{ route('user.show',Auth::user()) }}">マイページ</a></li>

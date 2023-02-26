@@ -10,7 +10,8 @@
     </div>
 </header>
  <!-- Section-->
- @if(Auth::id()== 2)
+ @auth
+ @if (auth()->user()->role === 1)
  <div class="container px-4 px-lg-5 mt-5">
  <div class="card">
  <h1 class="text-center fw-bolder">管理者権限</h1>
@@ -20,6 +21,7 @@
 </div>
 </div>
  @endif
+ @endauth
 
  <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">

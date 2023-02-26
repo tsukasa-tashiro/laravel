@@ -14,14 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Auth::routes();
 Route::group(['middleware' => 'auth'],function(){
 
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/post/search','PostController@search')->name('post.search');
-// Route::get('/account','DisplayController@account');
 
 Route::post('/post/confirm', 'PostController@confirm')->name('post.confirm');
 Route::post('/camera/confirm', 'CameraController@confirm')->name('camera.confirm');

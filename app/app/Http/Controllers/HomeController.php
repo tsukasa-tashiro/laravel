@@ -31,7 +31,7 @@ class HomeController extends Controller
             return redirect()->route('post.index');
         }
         elseif(Auth::user()->role==1){
-
+            return redirect()->route('post.index');
         }
         else{
             return redirect()->route('logout');
