@@ -67,6 +67,7 @@ class PostController extends Controller
                 $query->where('posts.camera_id', $cameraId);
             }
            
+            
             if(!empty($lensId)){
                 $query->where('posts.lens_id', $lensId);
             }
